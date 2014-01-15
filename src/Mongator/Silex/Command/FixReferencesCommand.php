@@ -9,11 +9,11 @@
  */
 
 namespace Mongator\Silex\Command;
-use Symfony\Component\Console\Command\Command;
+
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class FixReferencesCommand extends Command
+class FixReferencesCommand extends ContextualCommand
 {
     protected function configure()
     {
@@ -24,7 +24,7 @@ class FixReferencesCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $app = $this->getApplication()->getContainer();
+        $app = $this->getSilexApplication();
 
         $output->write('<info>Fixing missing References... </info>', false);
         $app['mongator']->fixAllMissingReferences();

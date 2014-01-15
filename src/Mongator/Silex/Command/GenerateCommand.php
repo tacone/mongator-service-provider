@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Mongator package.
  *
@@ -9,12 +10,14 @@
  */
 
 namespace Mongator\Silex\Command;
-use Symfony\Component\Console\Command\Command;
+
+use LogicException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class GenerateCommand extends Command
+class GenerateCommand extends ContextualCommand
 {
+
     protected function configure()
     {
         $this
@@ -24,19 +27,17 @@ class GenerateCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $app = $this->getApplication()->getContainer();
-
+        $app = $this->getSilexApplication();
         $output->write('<info>Generating models... </info>', false);
 
-        if ( isset($app['mongator.classes.yaml.path']) && $app['mongator.classes.yaml.path'] ) {
-            if ( !is_dir($path = $app['mongator.classes.yaml.path']) ) {
-                throw new \LogicException(
-                    'Registered "mongator.classes.yaml.path" not is a valid path.'
+        if (isset($app['mongator.classes.yaml.path']) && $app['mongator.classes.yaml.path']) {
+            if (!is_dir($path = $app['mongator.classes.yaml.path'])) {
+                throw new LogicException(
+                'Registered "mongator.classes.yaml.path" not is a valid path.'
                 );
             }
 
             $app['mongator.classes.config'] = $this->readYAMLs($path);
-            //var_dump( $app['mongator.classes.config']);
         }
 
         $app['mondator']->setConfigClasses($app['mongator.classes.config']);
@@ -47,7 +48,7 @@ class GenerateCommand extends Command
 
     private function readYAMLs($paths)
     {
-        if ( !is_array($paths) ) $paths = (array) $paths;
+        if (!is_array($paths)) $paths = (array) $paths;
 
         $defs = array();
         foreach ($paths as $path) {
@@ -63,10 +64,11 @@ class GenerateCommand extends Command
     {
         $files = glob($pattern, $flags);
 
-        foreach (glob(dirname($pattern).'/*', GLOB_ONLYDIR) as $dir) {
-            $files = array_merge($files, $this->findYAMLs($dir.'/'.basename($pattern), $flags));
+        foreach (glob(dirname($pattern) . '/*', GLOB_ONLYDIR) as $dir) {
+            $files = array_merge($files, $this->findYAMLs($dir . '/' . basename($pattern), $flags));
         }
 
         return $files;
     }
+
 }

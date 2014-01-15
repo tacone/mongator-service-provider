@@ -78,7 +78,21 @@ With this package you can find three useful commands:
 * ```mongator:indexes```: Ensures the indexes of all repositories
 * ```mongator:fix```: Fixes all the missing references.
 
-You need the suggested package ```cilex/console-service-provider```to use console commands on you Silex setup.
+You need to use the Symfony Console component, in this way:
+
+```php
+# console.php
+
+$app = require('app.php'); // SilexApplication
+$console = new Symfony\Component\Console\Application('My Mongo CLI App', '0.1');
+$app->boot();
+
+$console->add(new FixReferencesCommand($app));
+$console->add(new GenerateCommand($app));
+$console->add(new IndexesCommand($app));
+
+$console->run();
+```
 
 Tests
 -----

@@ -16,11 +16,9 @@
         "symfony/console": ">=2.3,<2.5-dev"
     },
     "suggest": {
-        "ext-yaml": "Needed to reaad class configs in YAML files",
-        "cilex/console-service-provider": "Needed if you want to use console commands, useful to generate the classes and indexes"
+        "ext-yaml": "Needed to reaad class configs in YAML files"
     },
     "require-dev": {
-        "cilex/console-service-provider": "dev-master",
         "silex/silex": "1.*"
     },
     "autoload": {
