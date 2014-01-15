@@ -1,5 +1,5 @@
 {
-    "name": "mongator/silex",
+    "name": "tacone/mongator-service-provider",
     "type": "library",
     "description": "Provider to use Mongator with Silex framework",
     "license": "MIT",
